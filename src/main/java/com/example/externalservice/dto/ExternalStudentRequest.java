@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class ExternalStudentResponse {
+public class ExternalStudentRequest {
 
     private String extraInfo;
 }

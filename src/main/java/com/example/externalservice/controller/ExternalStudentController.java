@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/external/students")
 @RequiredArgsConstructor
@@ -20,8 +22,14 @@ public class ExternalStudentController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ExternalStudentResponse> getExtra(@PathVariable String id) {
+    public ResponseEntity<ExternalStudentResponse> getExtra(@PathVariable UUID id) {
         return ResponseEntity.ok(externalStudentService.getById(id));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable UUID id){
+        externalStudentService.deleteById(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

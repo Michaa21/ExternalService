@@ -11,6 +11,6 @@ import java.util.UUID;
 @NoArgsConstructor
 public class ExternalStudentResponse {
 
-    private UUID id;
+    private UUID studentId;
     private String extraInfo;
 }

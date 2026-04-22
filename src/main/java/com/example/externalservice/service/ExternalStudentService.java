@@ -18,23 +18,25 @@ public class ExternalStudentService {
     private final ExternalStudentRepository externalStudentRepository;
 
     @Transactional(readOnly = true)
-    public ExternalStudentResponse getById(UUID id) {
-        ExternalStudent externalStudent = externalStudentRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("External student not found: " + id));
+    public ExternalStudentResponse getByStudentId(UUID studentId) {
+        ExternalStudent externalStudent = externalStudentRepository.findByStudentId(studentId)
+                .orElseThrow(() -> new EntityNotFoundException("External student not found by studentId: " + studentId));
 
-        return new ExternalStudentResponse(externalStudent.getId(),
-                externalStudent.getExtraInfo());
+        return new ExternalStudentResponse(
+                externalStudent.getStudentId(),
+                externalStudent.getExtraInfo()
+        );
     }
 
     @Transactional
     public ExternalStudentResponse create(ExternalStudentRequest request) {
         ExternalStudent externalStudent = new ExternalStudent();
-        externalStudent.setExtraInfo(request.getExtraInfo());
+        externalStudent.setStudentId(request.getStudentId());
+        externalStudent.setExtraInfo("extra-info-for-" + request.getName());
 
         ExternalStudent saved = externalStudentRepository.save(externalStudent);
 
-        return new ExternalStudentResponse(saved.getId(),
-                saved.getExtraInfo());
+        return new ExternalStudentResponse(saved.getStudentId(), saved.getExtraInfo());
     }
 
     @Transactional

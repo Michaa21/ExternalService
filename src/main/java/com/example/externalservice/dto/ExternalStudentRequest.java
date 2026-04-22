@@ -4,10 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.UUID;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class ExternalStudentRequest {
 
-    private String extraInfo;
+    private UUID studentId;
+    private String name;
 }

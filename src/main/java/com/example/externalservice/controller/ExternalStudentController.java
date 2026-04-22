@@ -21,14 +21,14 @@ public class ExternalStudentController {
         return ResponseEntity.ok(externalStudentService.create(request));
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ExternalStudentResponse> getExtra(@PathVariable UUID id) {
-        return ResponseEntity.ok(externalStudentService.getById(id));
+    @GetMapping("/{studentId}")
+    public ResponseEntity<ExternalStudentResponse> getExtra(@PathVariable UUID studentId) {
+        return ResponseEntity.ok(externalStudentService.getByStudentId(studentId));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable UUID id){
-        externalStudentService.deleteById(id);
+    @DeleteMapping("/{studentId}")
+    public ResponseEntity<Void> delete(@PathVariable UUID studentId) {
+        externalStudentService.deleteById(studentId);
         return ResponseEntity.noContent().build();
     }
 

@@ -28,7 +28,7 @@ public class ExternalStudentController {
 
     @DeleteMapping("/{studentId}")
     public ResponseEntity<Void> delete(@PathVariable UUID studentId) {
-        externalStudentService.deleteById(studentId);
+        externalStudentService.deleteByStudentId(studentId);
         return ResponseEntity.noContent().build();
     }
 

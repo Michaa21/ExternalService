@@ -40,7 +40,7 @@ public class ExternalStudentService {
     }
 
     @Transactional
-    public void deleteById(UUID id) {
-        externalStudentRepository.deleteById(id);
+    public void deleteByStudentId(UUID studentId) {
+        externalStudentRepository.deleteByStudentId(studentId);
     }
 }

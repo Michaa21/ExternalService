@@ -6,6 +6,7 @@ import com.example.externalservice.kafka.event.ExternalStudentCreatedEvent;
 import com.example.externalservice.kafka.event.StudentCreateRequestedEvent;
 import com.example.externalservice.kafka.processed.ProcessedEvent;
 import com.example.externalservice.kafka.processed.ProcessedEventRepository;
+import com.example.externalservice.kafka.service.DlqPublisher;
 import com.example.externalservice.outbox.OutboxEventService;
 import com.example.externalservice.repository.ExternalStudentRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,6 +29,7 @@ public class StudentCreateRequestedConsumer {
     private final ExternalStudentRepository externalStudentRepository;
     private final ProcessedEventRepository processedEventRepository;
     private final OutboxEventService outboxEventService;
+    private final DlqPublisher dlqPublisher;
 
     @KafkaListener(
             topics = KafkaTopics.STUDENT_CREATE_REQUESTS,
@@ -88,8 +90,15 @@ public class StudentCreateRequestedConsumer {
 
             log.info("Student create requested event {} processed successfully", event.eventId());
         } catch (Exception exception) {
-            log.error("Failed to process student create requested event", exception);
-            throw new IllegalStateException("Failed to process student create requested event", exception);
+            log.error("Failed to process student create requested event, sending to DLQ. Payload: {}", payload, exception);
+
+            dlqPublisher.publish(
+                    KafkaTopics.STUDENT_CREATE_REQUESTS,
+                    payload,
+                    exception
+            );
+
+            acknowledgment.acknowledge();
         }
     }
 }

@@ -4,7 +4,7 @@ import java.time.OffsetDateTime;
 import java.util.UUID;
 
 public record DlqEvent(
-        UUID evetId,
+        UUID eventId,
         String sourceTopic,
         String originalPayload,
         String errorMessage,

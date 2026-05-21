@@ -36,6 +36,12 @@ dependencies {
 
     testImplementation 'org.testcontainers:junit-jupiter'
     testImplementation 'org.testcontainers:postgresql'
+
+    implementation 'org.springframework.kafka:spring-kafka'
+    testImplementation 'org.springframework.kafka:spring-kafka-test'
+    testImplementation 'org.testcontainers:kafka'
+
+    implementation 'org.flywaydb:flyway-core:9.22.3'
 }
 
 tasks.named('test') {

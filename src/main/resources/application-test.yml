@@ -5,3 +5,5 @@ spring:
 
   kafka:
     bootstrap-servers: localhost:9094
+    listener:
+      auto-startup: false

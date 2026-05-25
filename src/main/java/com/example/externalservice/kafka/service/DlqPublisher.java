@@ -33,7 +33,7 @@ public class DlqPublisher {
             String payload = objectMapper.writeValueAsString(dlqEvent);
 
             kafkaTemplate.send(
-                    KafkaTopics.STUDENT_EVENTS_DLQ,
+                    KafkaTopics.DLQ_EVENTS,
                     dlqEvent.eventId().toString(),
                     payload
             ).whenComplete((result, ex) -> {
@@ -42,7 +42,7 @@ public class DlqPublisher {
                 } else {
                     log.info(
                             "DLQ event published to topic {} with key {}",
-                            KafkaTopics.STUDENT_EVENTS_DLQ,
+                            KafkaTopics.DLQ_EVENTS,
                             dlqEvent.eventId()
                     );
                 }

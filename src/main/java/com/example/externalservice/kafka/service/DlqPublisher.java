@@ -36,19 +36,17 @@ public class DlqPublisher {
                     KafkaTopics.DLQ_EVENTS,
                     dlqEvent.eventId().toString(),
                     payload
-            ).whenComplete((result, ex) -> {
-                if (ex != null) {
-                    log.error("Failed to publish DLQ event", ex);
-                } else {
-                    log.info(
-                            "DLQ event published to topic {} with key {}",
-                            KafkaTopics.DLQ_EVENTS,
-                            dlqEvent.eventId()
-                    );
-                }
-            });
+            ).get();
+
+            log.info(
+                    "DLQ event published to topic {} with key {}",
+                    KafkaTopics.DLQ_EVENTS,
+                    dlqEvent.eventId()
+            );
         } catch (JsonProcessingException exceptionToSerializeDlq) {
             throw new IllegalStateException("Failed to serialize DLQ event", exceptionToSerializeDlq);
+        } catch (Exception exceptionToPublishDlq) {
+            throw new IllegalStateException("Failed to publish DLQ event", exceptionToPublishDlq);
         }
     }
 }

@@ -1,5 +1,4 @@
-package com.example.externalservice.kafka.processed;
-
+package com.example.externalservice.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

@@ -1,9 +1,7 @@
-package com.example.externalservice.kafka.consumer;
+package com.example.externalservice.kafka;
 
-import com.example.externalservice.kafka.KafkaTopics;
-import com.example.externalservice.kafka.event.StudentCreateRequestedEvent;
-import com.example.externalservice.kafka.service.DlqPublisher;
-import com.example.externalservice.kafka.service.StudentCreateRequestedEventHandler;
+import com.example.externalservice.dto.StudentCreateRequestedEvent;
+import com.example.externalservice.service.StudentCreateRequestedEventHandler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

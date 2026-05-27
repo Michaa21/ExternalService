@@ -1,4 +1,4 @@
-package com.example.externalservice.kafka.event;
+package com.example.externalservice.dto;
 
 import java.time.OffsetDateTime;
 import java.util.UUID;

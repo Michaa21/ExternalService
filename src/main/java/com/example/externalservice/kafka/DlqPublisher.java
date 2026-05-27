@@ -1,7 +1,6 @@
-package com.example.externalservice.kafka.service;
+package com.example.externalservice.kafka;
 
-import com.example.externalservice.kafka.KafkaTopics;
-import com.example.externalservice.kafka.event.DlqEvent;
+import com.example.externalservice.dto.DlqEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;

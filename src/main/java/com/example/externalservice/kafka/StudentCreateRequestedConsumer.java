@@ -23,9 +23,13 @@ public class StudentCreateRequestedConsumer {
             groupId = "external-service"
     )
     public void consume(String payload, Acknowledgment acknowledgment) {
+        String originalKey = null;
+
         try {
             StudentCreateRequestedEvent event =
                     objectMapper.readValue(payload, StudentCreateRequestedEvent.class);
+
+            originalKey = event.eventId().toString();
 
             eventHandler.handle(event);
 
@@ -36,8 +40,11 @@ public class StudentCreateRequestedConsumer {
                     exception
             );
 
+            String dlqKey = originalKey != null ? originalKey : "unknown";
+
             dlqPublisher.publish(
                     KafkaTopics.STUDENT_CREATE_REQUESTS,
+                    dlqKey,
                     payload,
                     exception
             );

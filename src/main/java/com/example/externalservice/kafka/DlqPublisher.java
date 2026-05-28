@@ -19,7 +19,7 @@ public class DlqPublisher {
     private final KafkaTemplate<String, String> kafkaTemplate;
     private final ObjectMapper objectMapper;
 
-    public void publish(String sourceTopic, String originalPayload, Exception exception) {
+    public void publish(String sourceTopic, String originalKey, String originalPayload, Exception exception) {
         try {
             DlqEvent dlqEvent = new DlqEvent(
                     UUID.randomUUID(),
@@ -33,7 +33,7 @@ public class DlqPublisher {
 
             kafkaTemplate.send(
                     KafkaTopics.DLQ_EVENTS,
-                    dlqEvent.eventId().toString(),
+                    originalKey,
                     payload
             ).get();
 

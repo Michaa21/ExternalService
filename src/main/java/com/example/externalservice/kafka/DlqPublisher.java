@@ -40,7 +40,7 @@ public class DlqPublisher {
             log.info(
                     "DLQ event published to topic {} with key {}",
                     KafkaTopics.DLQ_EVENTS,
-                    dlqEvent.eventId()
+                    originalKey
             );
         } catch (JsonProcessingException exceptionToSerializeDlq) {
             throw new IllegalStateException("Failed to serialize DLQ event", exceptionToSerializeDlq);

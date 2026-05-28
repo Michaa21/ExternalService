@@ -6,8 +6,11 @@ import com.example.externalservice.repository.ExternalStudentRepository;
 import com.example.externalservice.repository.ProcessedEventRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.transaction.support.TransactionSynchronization;
+import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 import java.util.UUID;
 
@@ -22,16 +25,27 @@ public class StudentCreateRequestedEventHandler {
     private final ProcessedEventRepository processedEventRepository;
 
     @Transactional
-    public void handle(StudentCreateRequestedEvent event) {
+    public void handle(StudentCreateRequestedEvent event, Acknowledgment acknowledgment) {
 
-        int inserted = processedEventRepository.insertIfNotExists(UUID.randomUUID(), event.eventId(), EVENT_TYPE);
+        TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
+            @Override
+            public void afterCommit() {
+                acknowledgment.acknowledge();
+            }
+        });
+
+        int inserted = processedEventRepository.insertIfNotExists(
+                UUID.randomUUID(),
+                event.eventId(),
+                EVENT_TYPE);
 
         if (inserted == 0) {
             log.info("Event {} already processed, skipping", event.eventId());
             return;
         }
 
-        ExternalStudent externalStudent = externalStudentRepository.findByStudentId(event.studentId()).orElseGet(ExternalStudent::new);
+        ExternalStudent externalStudent = externalStudentRepository.findByStudentId(event.studentId())
+                .orElseGet(ExternalStudent::new);
 
         externalStudent.setStudentId(event.studentId());
         externalStudent.setName(event.name());

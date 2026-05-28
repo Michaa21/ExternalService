@@ -31,9 +31,7 @@ public class StudentCreateRequestedConsumer {
 
             originalKey = event.eventId().toString();
 
-            eventHandler.handle(event);
-
-            acknowledgment.acknowledge();
+            eventHandler.handle(event, acknowledgment);
         } catch (Exception exception) {
             log.error("Failed to process student create requested event, sending to DLQ. Payload: {}",
                     payload,

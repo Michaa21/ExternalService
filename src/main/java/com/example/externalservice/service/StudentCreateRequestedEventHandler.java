@@ -37,7 +37,8 @@ public class StudentCreateRequestedEventHandler {
         int inserted = processedEventRepository.insertIfNotExists(
                 UUID.randomUUID(),
                 event.eventId(),
-                EVENT_TYPE);
+                EVENT_TYPE
+        );
 
         if (inserted == 0) {
             log.info("Event {} already processed, skipping", event.eventId());

@@ -2,6 +2,7 @@ package com.example.externalservice.kafka;
 
 import com.example.externalservice.dto.StudentCreateRequestedEvent;
 import com.example.externalservice.service.StudentCreateRequestedEventHandler;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -23,31 +24,26 @@ public class StudentCreateRequestedConsumer {
             groupId = "external-service"
     )
     public void consume(String payload, Acknowledgment acknowledgment) {
-        String originalKey = null;
+        StudentCreateRequestedEvent event;
 
         try {
-            StudentCreateRequestedEvent event =
-                    objectMapper.readValue(payload, StudentCreateRequestedEvent.class);
-
-            originalKey = event.eventId().toString();
-
-            eventHandler.handle(event, acknowledgment);
-        } catch (Exception exception) {
-            log.error("Failed to process student create requested event, sending to DLQ. Payload: {}",
+            event = objectMapper.readValue(payload, StudentCreateRequestedEvent.class);
+        } catch (JsonProcessingException exception) {
+            log.error("Failed to deserialize student create requested event, sending to DLQ. Payload: {}",
                     payload,
                     exception
             );
 
-            String dlqKey = originalKey != null ? originalKey : "unknown";
-
             dlqPublisher.publish(
                     KafkaTopics.STUDENT_CREATE_REQUESTS,
-                    dlqKey,
+                    "unknown",
                     payload,
                     exception
             );
 
             acknowledgment.acknowledge();
+            return;
         }
+        eventHandler.handle(event, acknowledgment);
     }
 }

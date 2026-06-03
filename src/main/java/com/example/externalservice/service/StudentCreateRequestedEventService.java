@@ -17,7 +17,7 @@ import java.util.UUID;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class StudentCreateRequestedEventHandler {
+public class StudentCreateRequestedEventService {
 
     private static final String EVENT_TYPE = "STUDENT_CREATE_REQUESTED";
 

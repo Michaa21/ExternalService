@@ -1,7 +1,7 @@
 package com.example.externalservice.kafka;
 
 import com.example.externalservice.dto.StudentCreateRequestedEvent;
-import com.example.externalservice.service.StudentCreateRequestedEventHandler;
+import com.example.externalservice.service.StudentCreateRequestedEventService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
@@ -16,12 +16,12 @@ import org.springframework.stereotype.Component;
 public class StudentCreateRequestedConsumer {
 
     private final ObjectMapper objectMapper;
-    private final StudentCreateRequestedEventHandler eventHandler;
+    private final StudentCreateRequestedEventService eventService;
     private final DlqPublisher dlqPublisher;
 
     @KafkaListener(
             topics = KafkaTopics.STUDENT_CREATE_REQUESTS,
-            groupId = "external-service"
+            groupId = "${spring.kafka.consumer.group-id}"
     )
     public void consume(String payload, Acknowledgment acknowledgment) {
         StudentCreateRequestedEvent event;
@@ -44,6 +44,6 @@ public class StudentCreateRequestedConsumer {
             acknowledgment.acknowledge();
             return;
         }
-        eventHandler.handle(event, acknowledgment);
+        eventService.handle(event, acknowledgment);
     }
 }

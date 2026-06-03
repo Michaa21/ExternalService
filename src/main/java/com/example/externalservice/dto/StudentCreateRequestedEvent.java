@@ -10,7 +10,7 @@ public record StudentCreateRequestedEvent(
         String name,
         String email,
         Integer age,
-        List<String> lessonTitles,
+        List<String> lessonTitleSnapshots,
         OffsetDateTime createdAt
 ) {
 }

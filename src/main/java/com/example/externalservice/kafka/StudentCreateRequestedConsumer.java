@@ -44,6 +44,7 @@ public class StudentCreateRequestedConsumer {
             acknowledgment.acknowledge();
             return;
         }
-        eventService.handle(event, acknowledgment);
+        eventService.handle(event);
+        acknowledgment.acknowledge();
     }
 }

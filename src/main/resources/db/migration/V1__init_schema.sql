@@ -15,6 +15,3 @@ create table if not exists processed_events
     event_type   varchar(255) not null,
     processed_at timestamp with time zone not null
 );
-
-create index if not exists idx_processed_events_event_id
-    on processed_events (event_id);

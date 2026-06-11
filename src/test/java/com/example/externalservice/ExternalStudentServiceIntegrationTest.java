@@ -14,7 +14,7 @@ import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ExternalStudentServiceIntegrationTest extends ExternalServiceApplicationTests {
+class ExternalStudentServiceIntegrationTest extends IntegrationTestBase {
 
     @Autowired
     ExternalStudentService externalStudentService;

@@ -1,0 +1,9 @@
+spring:
+  task:
+    scheduling:
+      enabled: false
+
+  kafka:
+    bootstrap-servers: localhost:9094
+    listener:
+      auto-startup: false

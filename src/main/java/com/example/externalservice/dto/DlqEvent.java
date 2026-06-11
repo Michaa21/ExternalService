@@ -1,0 +1,13 @@
+package com.example.externalservice.dto;
+
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
+public record DlqEvent(
+        UUID eventId,
+        String sourceTopic,
+        String originalPayload,
+        String errorMessage,
+        OffsetDateTime failedAt
+) {
+}
